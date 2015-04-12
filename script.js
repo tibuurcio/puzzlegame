@@ -55,6 +55,10 @@ window.requestAnimFrame = (function(){
             }; 
     })();
 
+// var cancelAnimationFrame = window.cancelAnimationFrame || 
+						  // window.mozCancelAnimationFrame ||
+						  // window.webkitCancelAnimationFrame;
+
 var canvas = document.getElementById("myCanvas");
 var context = canvas.getContext("2d");
 context.font = "italic 26pt Tahoma";
@@ -70,7 +74,11 @@ for(var i = 0, y = 10; i < 3; i++, y+=60) {
 		numbers.splice(z, 1);
 	}
 }
-window.requestAnimFrame(draw);
+
+window.addEventListener("onload", function() {
+	console.log("Começou!");
+	requestId = window.requestAnimFrame(draw);
+});
 // End of setups
 
 
@@ -78,13 +86,14 @@ window.requestAnimFrame(draw);
 // Game loop
 function draw() {
 	if(!win) {
-    	requestId = window.requestAnimFrame(draw);
+    	window.requestAnimFrame(draw);
     }
     context.clearRect(0, 0, canvas.width, canvas.height);
     //checkAnimations();
     drawBlocks(blocks);
     win = endGame();
     if(win) {
+    	console.log(win);
     	drawBlocks(blocks);
     	alert("Você venceu, parabéns!");
     	window.cancelAnimationFrame(requestId);
